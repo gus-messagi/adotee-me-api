@@ -7,6 +7,7 @@ router.get('/', (req, res) => {
   res.send('Hello World');
 });
 
-router.post('/user', UserController.create);
+router.post('/user/register', UserController.create);
+router.get('/user/login', UserController.login);
 
 export default router;

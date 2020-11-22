@@ -28,6 +28,35 @@ const create = async (req: Request, res: Response) => {
   };
 };
 
+const login = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  const UserFromMongoose = await UserModel.findOne({ email });
+
+  if (!UserFromMongoose) {
+    return res.send({
+      statusCode: 400,
+      message: 'E-mail não encontrado'
+    });
+  }
+
+  const isCorrectPassword = await bcrypt.compare(password, UserFromMongoose.password);
+
+  if (isCorrectPassword) {
+    const jwtToken = await jwt.sign({ sub: UserFromMongoose._id }, privateJwtKey);
+
+    res.send({
+      user: UserFromMongoose,
+      token: jwtToken
+    });
+  }
+
+  res.send({
+    statusCode: 400,
+    message: 'Senha inválida'
+  });
+};
+
 export default {
-  create
+  create,
+  login
 };
