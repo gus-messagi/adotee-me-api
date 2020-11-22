@@ -18,6 +18,7 @@ mongoose.connect(url, {
   })
   .catch((err) => console.log(err));
 
+app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(routes);
 
