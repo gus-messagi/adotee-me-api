@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import routes from './routes';
 
 dotenv.config();
 
@@ -17,8 +18,7 @@ mongoose.connect(url, {
   })
   .catch((err) => console.log(err));
 
-app.get('/', (req, res) => {
-  res.send('Hello GetPet Api');
-});
+app.use(express.urlencoded({ extended: false }));
+app.use(routes);
 
 app.listen(3333);
