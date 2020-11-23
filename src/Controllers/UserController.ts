@@ -35,7 +35,7 @@ const login = async (req: Request, res: Response) => {
   if (!UserFromMongoose) {
     return res.send({
       statusCode: 400,
-      message: 'E-mail não encontrado'
+      message: 'E-mail e/ou senha inválido'
     });
   }
 
@@ -52,7 +52,7 @@ const login = async (req: Request, res: Response) => {
 
   res.send({
     statusCode: 400,
-    message: 'Senha inválida'
+    message: 'Email e/ou senha inválida'
   });
 };
 
