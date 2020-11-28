@@ -12,4 +12,5 @@ export default interface IPet extends Document {
   temperament?: string[];
   hasSpecialNeeds: boolean;
   specialNeeds?: string;
+  adopted: boolean;
 };

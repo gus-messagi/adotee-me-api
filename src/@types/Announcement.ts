@@ -8,4 +8,5 @@ export default interface IAnnouncement extends Document {
   state: string;
   city: string;
   photos: string[],
+  jointAdoption: boolean;
 }

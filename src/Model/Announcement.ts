@@ -9,7 +9,8 @@ const announcementSchema = new Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
   state: { type: String, required: true },
-  city: { type: String, required: true }
+  city: { type: String, required: true },
+  jointAdoption: { type: Boolean, required: true, default: false }
 });
 
 export default mongoose.model<IAnnouncement>('Announcement', announcementSchema);

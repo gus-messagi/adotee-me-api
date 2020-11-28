@@ -15,7 +15,8 @@ const petSchema = new Schema({
   health: { type: [String], enum: [HEALTH.CASTRATED, HEALTH.DEWORMED, HEALTH.VACCINATED] },
   hasSpecialNeeds: { type: Boolean, required: true },
   specialNeeds: { type: String, maxlength: 255 },
-  temperament: { type: [String] }
+  temperament: { type: [String] },
+  adopted: { type: Boolean, required: true, default: false }
 });
 
 export default mongoose.model<IPet>('Pet', petSchema);

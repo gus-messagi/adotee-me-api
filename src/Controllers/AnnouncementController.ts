@@ -55,6 +55,7 @@ const index = async (_: any, res: Response) => {
         state: 1,
         city: 1,
         user: 1,
+        jointAdoption: 1,
         pets: {
           _id: 1,
           health: 1,
@@ -65,7 +66,8 @@ const index = async (_: any, res: Response) => {
           age: 1,
           size: 1,
           type: 1,
-          hasSpecialNeeds: 1
+          hasSpecialNeeds: 1,
+          adopted: 1
         }
       }
     }
