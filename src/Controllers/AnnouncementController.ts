@@ -67,7 +67,8 @@ const index = async (_: any, res: Response) => {
           size: 1,
           type: 1,
           hasSpecialNeeds: 1,
-          adopted: 1
+          adopted: 1,
+          specialNeeds: 1
         }
       }
     }
