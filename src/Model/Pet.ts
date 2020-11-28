@@ -5,7 +5,7 @@ import { SEX, AGE, SIZE, TYPE, HEALTH } from '../Constants/Pet';
 const { Schema } = mongoose;
 
 const petSchema = new Schema({
-  userId: { type: String, required: true },
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   name: { type: String },
   breed: { type: String },
   sex: { type: String, enum: [SEX.FEMALE, SEX.MALE, SEX.UNDEFINED], required: true },
