@@ -8,4 +8,8 @@ export default interface IPet extends Document {
   age: string;
   type: string;
   size?: string;
+  health?: string[];
+  temperament?: string[];
+  hasSpecialNeeds: boolean;
+  specialNeeds?: string;
 };

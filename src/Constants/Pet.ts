@@ -23,9 +23,16 @@ export const TYPE = {
   OTHER: 'OTHER'
 };
 
+export const HEALTH = {
+  VACCINATED: 'vacinado',
+  CASTRATED: 'castrado',
+  DEWORMED: 'vermifugado'
+};
+
 export default {
   SIZE,
   AGE,
   SEX,
-  TYPE
+  TYPE,
+  HEALTH
 };
