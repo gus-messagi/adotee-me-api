@@ -1,7 +1,9 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import swaggerUi from 'swagger-ui-express';
 import routes from './routes';
+import * as swaggerDocument from './swagger.json';
 
 dotenv.config();
 
@@ -13,10 +15,16 @@ mongoose.connect(url, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-  .then((res) => {
+  .then(() => {
     console.log('Connection is working');
   })
   .catch((err) => console.log(err));
+
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument)
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

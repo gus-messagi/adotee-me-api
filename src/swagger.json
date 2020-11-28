@@ -1,0 +1,81 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+      "version": "1.0.0",
+      "title": "GetPet Api",
+      "license": {
+          "name": "MIT",
+          "url": "https://opensource.org/licenses/MIT"
+      }
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "Dev url"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/user/register": {
+      "post": {
+        "requestBody": {
+          "description": "User object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/UserToCreate"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Usuário criado com sucesso"
+          },
+          "400": {
+            "description": "Falha ao criar usuário."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "UserToCreate": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "contact": {
+          "type": "string"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "additionalProperties": {
+          "$ref": "#/definitions/UserToCreate"
+        }
+      }
+    }  
+  }
+}
