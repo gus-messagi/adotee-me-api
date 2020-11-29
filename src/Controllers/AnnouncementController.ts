@@ -56,6 +56,7 @@ const index = async (_: any, res: Response) => {
         city: 1,
         user: 1,
         jointAdoption: 1,
+        isOpen: 1,
         pets: {
           _id: 1,
           health: 1,
@@ -110,7 +111,27 @@ const create = async (req: Request, res: Response) => {
   res.status(200).send(createdAnnouncement);
 };
 
+const closeAnnouncement = async (req: Request, res: Response) => {
+  const token = req.headers.authorization?.split(' ')[1] || '';
+
+  if (!token) {
+    res.status(401).send('Usuário não autenticado.');
+  }
+
+  jwt.verify(token, privateJwtKey, function (err) {
+    if (err) {
+      res.status(401).send('Token não válido');
+    }
+  });
+
+  const { id } = req.params;
+
+  const announcementClosed = await AnnouncementModel.findOneAndUpdate({ _id: id }, { isOpen: false }, { new: true });
+  res.status(200).send(announcementClosed);
+};
+
 export default {
   index,
-  create
+  create,
+  closeAnnouncement
 };

@@ -15,5 +15,6 @@ router.put('/pet/:id', PetController.updateOneAdoption);
 // announcement routes
 router.post('/announcement/create', AnnouncementController.create);
 router.get('/announcement', AnnouncementController.index);
+router.put('/announcement/close/:id', AnnouncementController.closeAnnouncement);
 
 export default router;
