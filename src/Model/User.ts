@@ -8,7 +8,8 @@ const userSchema = new Schema({
   email: { type: String, required: true, index: { unique: true } },
   password: { type: String, required: true },
   photo: { type: String },
-  contact: { type: String, required: true }
+  contact: { type: String, required: true },
+  favorites: { type: [Schema.Types.ObjectId], ref: 'Announcement' }
 });
 
 export default mongoose.model<IUser>('User', userSchema);

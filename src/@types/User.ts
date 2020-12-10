@@ -6,4 +6,5 @@ export default interface IUser extends Document {
   password: string,
   photo?: string;
   contact: string;
+  favorites?: string[];
 };

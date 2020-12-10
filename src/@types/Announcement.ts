@@ -9,4 +9,5 @@ export default interface IAnnouncement extends Document {
   city: string;
   photos: string[],
   jointAdoption: boolean;
+  isOpen: boolean;
 }

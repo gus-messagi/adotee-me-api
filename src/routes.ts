@@ -7,6 +7,7 @@ const router = express.Router();
 
 // user routes
 router.post('/user/register', UserController.create);
+router.put('/user/favorites/:id', UserController.favorites);
 router.get('/user/login', UserController.login);
 
 // pet routes

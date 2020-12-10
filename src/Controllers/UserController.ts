@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
+import jwt, { decode, DecodeOptions } from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import UserModel from '../Model/User';
@@ -56,7 +56,61 @@ const login = async (req: Request, res: Response) => {
   });
 };
 
+const favorites = async (req: Request, res: Response) => {
+  const token = req.headers.authorization?.split(' ')[1] || '';
+  const { id } = req.params;
+
+  if (!token) {
+    res.status(401).send('Usuário não autenticado.');
+  }
+
+  jwt.verify(token, privateJwtKey, async function (err, decoded) {
+    if (err) {
+      res.status(401).send('Token não válido');
+    }
+
+    const jwtDecode = decoded as { sub: string };
+
+    const user = await UserModel.findById(jwtDecode.sub);
+
+    const hasFavorite = user?.favorites?.filter(favorite => favorite.toString() === id.toString());
+
+    if (hasFavorite?.length === 0) {
+      const updateUser = await UserModel.findByIdAndUpdate(
+        {
+          _id: user?._id
+        }, {
+          favorites: [
+            ...user?.favorites,
+            id
+          ]
+        },
+        {
+          new: true
+        }
+      );
+
+      res.status(200).send(updateUser);
+    } else {
+      const favorites = user?.favorites?.filter(favorite => favorite.toString() !== id.toString());
+      const updateUser = await UserModel.findByIdAndUpdate(
+        {
+          _id: user?._id
+        }, {
+          favorites
+        },
+        {
+          new: true
+        }
+      );
+
+      res.status(200).send(updateUser);
+    }
+  });
+};
+
 export default {
   create,
-  login
+  login,
+  favorites
 };
