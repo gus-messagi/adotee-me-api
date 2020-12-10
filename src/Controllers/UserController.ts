@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import jwt, { decode, DecodeOptions } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import UserModel from '../Model/User';
@@ -76,12 +76,14 @@ const favorites = async (req: Request, res: Response) => {
     const hasFavorite = user?.favorites?.filter(favorite => favorite.toString() === id.toString());
 
     if (hasFavorite?.length === 0) {
+      const userFavorites = user?.favorites || [];
+
       const updateUser = await UserModel.findByIdAndUpdate(
         {
           _id: user?._id
         }, {
           favorites: [
-            ...user?.favorites,
+            ...userFavorites,
             id
           ]
         },

@@ -8,7 +8,6 @@
     "resolveJsonModule": true,                   /* Skip type checking of declaration files. */
     "forceConsistentCasingInFileNames": true,  /* Disallow inconsistently-cased references to the same file. */
     "outDir": "./dist",
-    "downlevelIteration": true,
     "typeRoots": [
       "@types",
       "./node_modules/@types",
