@@ -11,6 +11,11 @@ const privateJwtKey = process.env.PRIVATE_JWT_KEY || '';
 const index = async (_: any, res: Response) => {
   const announcements = await AnnouncementModel.aggregate([
     {
+      $match: {
+        isOpen: true
+      }
+    },
+    {
       $lookup: {
         from: 'users',
         let: {
