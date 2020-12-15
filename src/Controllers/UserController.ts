@@ -111,8 +111,29 @@ const favorites = async (req: Request, res: Response) => {
   });
 };
 
+const getUser = (req: Request, res: Response) => {
+  const { token } = req.body;
+
+  if (!token) {
+    res.status(401).send('Faltando token');
+  }
+
+  jwt.verify(token, privateJwtKey, async function (err: any, decoded: any) {
+    if (err) {
+      res.status(401).send('Token não válido');
+    }
+
+    const jwtDecode = decoded as { sub: string };
+
+    const user = await UserModel.findById(jwtDecode.sub);
+
+    res.status(200).send(user);
+  });
+};
+
 export default {
   create,
   login,
-  favorites
+  favorites,
+  getUser
 };

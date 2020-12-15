@@ -9,6 +9,7 @@ const router = express.Router();
 router.post('/user/register', UserController.create);
 router.put('/user/favorites/:id', UserController.favorites);
 router.post('/user/login', UserController.login);
+router.post('/user/token', UserController.getUser);
 
 // pet routes
 router.put('/pet/:id', PetController.updateOneAdoption);
