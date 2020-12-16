@@ -1,8 +1,10 @@
-import { Request, Response } from 'express';
+import { Request, Response, Express } from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import fs from 'fs';
 import PetController from './PetController';
 import AnnouncementModel from '../Model/Announcement';
+import ImageProcessor from '../Utils/ImageProcessor';
 
 dotenv.config();
 
@@ -135,8 +137,20 @@ const closeAnnouncement = async (req: Request, res: Response) => {
   res.status(200).send(announcementClosed);
 };
 
+const uploadImage = (req: Request, res: Response) => {
+  const photos = req.files as Express.Multer.File[];
+
+  photos.forEach(async photo => {
+    const base64 = fs.readFileSync(photo.path, 'base64');
+    ImageProcessor.sendToBucket(base64, photo.originalname);
+  });
+
+  res.status(200).send('Tudo ok por aqui');
+};
+
 export default {
   index,
   create,
-  closeAnnouncement
+  closeAnnouncement,
+  uploadImage
 };

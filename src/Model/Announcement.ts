@@ -11,7 +11,8 @@ const announcementSchema = new Schema({
   state: { type: String, required: true },
   city: { type: String, required: true },
   jointAdoption: { type: Boolean, required: true, default: false },
-  isOpen: { type: Boolean, required: true, default: true }
+  isOpen: { type: Boolean, required: true, default: true },
+  photos: { type: [String], default: [] }
 });
 
 export default mongoose.model<IAnnouncement>('Announcement', announcementSchema);
