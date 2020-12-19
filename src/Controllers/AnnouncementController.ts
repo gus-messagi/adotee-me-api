@@ -159,6 +159,7 @@ const uploadImage = (req: Request, res: Response) => {
       const filename = `${jwtDecode.sub}-${photo.originalname}`;
       ImageProcessor.sendToBucket(base64, filename);
       photosSendToDb.push(filename);
+      fs.unlinkSync(photo.path);
     });
 
     const announcement = await AnnouncementModel.findOneAndUpdate(
