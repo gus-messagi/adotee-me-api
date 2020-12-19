@@ -22,6 +22,6 @@ router.put('/pet/:id', PetController.updateOneAdoption);
 router.post('/announcement/create', AnnouncementController.create);
 router.get('/announcement', AnnouncementController.index);
 router.put('/announcement/close/:id', AnnouncementController.closeAnnouncement);
-router.post('/announcement/upload-image', upload.array('photos', 12), AnnouncementController.uploadImage);
+router.post('/announcement/upload-image/:announcementId', upload.array('photos', 12), AnnouncementController.uploadImage);
 
 export default router;

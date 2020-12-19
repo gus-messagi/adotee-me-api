@@ -138,14 +138,44 @@ const closeAnnouncement = async (req: Request, res: Response) => {
 };
 
 const uploadImage = (req: Request, res: Response) => {
+  const token = req.headers.authorization?.split(' ')[1] || '';
   const photos = req.files as Express.Multer.File[];
+  const { announcementId } = req.params;
 
-  photos.forEach(async photo => {
-    const base64 = fs.readFileSync(photo.path, 'base64');
-    ImageProcessor.sendToBucket(base64, photo.originalname);
+  if (!token) {
+    res.status(401).send('Usuário não autenticado.');
+  }
+
+  jwt.verify(token, privateJwtKey, async function (err, decoded) {
+    if (err) {
+      res.status(401).send('Token não válido');
+    }
+
+    const jwtDecode = decoded as { sub: string };
+    const photosSendToDb: string[] = [];
+
+    photos.forEach(photo => {
+      const base64 = fs.readFileSync(photo.path, 'base64');
+      const filename = `${jwtDecode.sub}-${photo.originalname}`;
+      ImageProcessor.sendToBucket(base64, filename);
+      photosSendToDb.push(filename);
+    });
+
+    const announcement = await AnnouncementModel.findOneAndUpdate(
+      {
+        _id: announcementId
+      }, {
+        $set: {
+          photos: photosSendToDb
+        }
+      },
+      {
+        new: true
+      }
+    );
+
+    res.status(200).send(announcement);
   });
-
-  res.status(200).send('Tudo ok por aqui');
 };
 
 export default {
