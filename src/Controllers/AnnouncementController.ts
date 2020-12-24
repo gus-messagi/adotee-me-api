@@ -5,12 +5,15 @@ import fs from 'fs';
 import PetController from './PetController';
 import AnnouncementModel from '../Model/Announcement';
 import ImageProcessor from '../Utils/ImageProcessor';
+import applyFilter from '../Utils/AnnouncementFilters';
 
 dotenv.config();
 
 const privateJwtKey = process.env.PRIVATE_JWT_KEY || '';
 
-const index = async (_: any, res: Response) => {
+const index = async (req: Request, res: Response) => {
+  const { age, sex, size, type, health } = req.query;
+
   const announcements = await AnnouncementModel.aggregate([
     {
       $match: {
@@ -64,6 +67,7 @@ const index = async (_: any, res: Response) => {
         user: 1,
         jointAdoption: 1,
         isOpen: 1,
+        photos: 1,
         pets: {
           _id: 1,
           health: 1,
@@ -82,7 +86,15 @@ const index = async (_: any, res: Response) => {
     }
   ]);
 
-  res.status(200).send(announcements);
+  const response = applyFilter(announcements, {
+    age,
+    health,
+    size,
+    type,
+    sex
+  });
+
+  res.status(200).send(response);
 };
 
 const create = async (req: Request, res: Response) => {
