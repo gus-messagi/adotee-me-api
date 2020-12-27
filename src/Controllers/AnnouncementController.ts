@@ -6,6 +6,7 @@ import PetController from './PetController';
 import AnnouncementModel from '../Model/Announcement';
 import ImageProcessor from '../Utils/ImageProcessor';
 import applyFilter from '../Utils/AnnouncementFilters';
+import mongoose from 'mongoose';
 
 dotenv.config();
 
@@ -95,6 +96,85 @@ const index = async (req: Request, res: Response) => {
   });
 
   res.status(200).send(response);
+};
+
+const show = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const ObjectId = mongoose.Types.ObjectId;
+
+  const announcement = await AnnouncementModel.aggregate([
+    {
+      $match: {
+        _id: ObjectId(id)
+      }
+    },
+    {
+      $lookup: {
+        from: 'users',
+        let: {
+          id: '$userId'
+        },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $eq: [
+                  '$_id',
+                  '$$id'
+                ]
+              }
+            }
+          },
+          {
+            $project: {
+              _id: 1,
+              name: 1,
+              email: 1,
+              contact: 1
+            }
+          }
+        ],
+        as: 'user'
+      }
+    },
+    {
+      $lookup: {
+        from: 'pets',
+        localField: 'petIds',
+        foreignField: '_id',
+        as: 'pets'
+      }
+    },
+    {
+      $project: {
+        _id: 1,
+        title: 1,
+        description: 1,
+        state: 1,
+        city: 1,
+        user: 1,
+        jointAdoption: 1,
+        isOpen: 1,
+        photos: 1,
+        pets: {
+          _id: 1,
+          health: 1,
+          temperament: 1,
+          name: 1,
+          breed: 1,
+          sex: 1,
+          age: 1,
+          size: 1,
+          type: 1,
+          hasSpecialNeeds: 1,
+          adopted: 1,
+          specialNeeds: 1
+        }
+      }
+    }
+  ]);
+
+  res.status(200).send(announcement[0]);
 };
 
 const create = async (req: Request, res: Response) => {
@@ -193,6 +273,7 @@ const uploadImage = (req: Request, res: Response) => {
 
 export default {
   index,
+  show,
   create,
   closeAnnouncement,
   uploadImage

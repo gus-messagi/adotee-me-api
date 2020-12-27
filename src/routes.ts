@@ -20,6 +20,7 @@ router.put('/pet/:id', PetController.updateOneAdoption);
 
 // announcement routes
 router.post('/announcement/create', AnnouncementController.create);
+router.get('/announcement/:id', AnnouncementController.show);
 router.get('/announcement', AnnouncementController.index);
 router.put('/announcement/close/:id', AnnouncementController.closeAnnouncement);
 router.post('/announcement/upload-image/:announcementId', upload.array('photos', 12), AnnouncementController.uploadImage);
