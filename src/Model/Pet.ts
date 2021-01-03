@@ -7,7 +7,6 @@ const { Schema } = mongoose;
 const petSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   name: { type: String },
-  breed: { type: String },
   sex: { type: String, enum: [SEX.FEMALE, SEX.MALE, SEX.UNDEFINED], required: true },
   age: { type: String, enum: [AGE.YOUNG, AGE.ADULT, AGE.OLD], required: true },
   size: { type: String, enum: [SIZE.SMALL, SIZE.MEDIUM, SIZE.LARGE] },
